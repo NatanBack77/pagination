@@ -3,7 +3,6 @@ import {
   Controller,
   Get,
   Param,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { CepService } from './cep.service';
@@ -14,16 +13,16 @@ export class CepController {
   constructor(private cepService: CepService) {}
   @UseGuards(AuthGuard)
   @Get(':cep')
-  async getAll(@Req() req, @Param('cep') cep: string) {
+  async getAll(@Param('cep') cep: string) {
     const validator = await this.cepService.findGetByCep(cep);
 
-    if (validator.status === 404) {
+    if (validator.status === 400) {
       const validator2 = await this.cepService.findGetByCep2(cep);
 
-      if (validator2.status === 404) {
+      if (validator2.status === 400) {
         const validator3 = await this.cepService.findGetByCep3(cep);
 
-        if (validator3.status === 404) {
+        if (validator3.status === 400) {
           throw new BadRequestException('Cep Inválido');
         }
 

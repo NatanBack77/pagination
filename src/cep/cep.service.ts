@@ -30,10 +30,13 @@ export class CepService {
         return {
           data: result.data,
           status: result.status,
+          statusText: result.statusText,
+          headers: result.headers,
+          config: result.config,
         };
       })
-      .catch((err) => {
-        return err;
+      .catch(() => {
+        throw new BadRequestException('Cep Inválido');
       });
   }
   async findGetByCep3(cep3: string): Promise<AxiosResponse<any>> {
@@ -43,10 +46,13 @@ export class CepService {
         return {
           data: result.data,
           status: result.status,
+          statusText: result.statusText,
+          headers: result.headers,
+          config: result.config,
         };
       })
-      .catch((err) => {
-        return err;
+      .catch(() => {
+        throw new BadRequestException('Cep Inválido');
       });
   }
 }
