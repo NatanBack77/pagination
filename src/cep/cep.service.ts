@@ -14,9 +14,9 @@ export class CepService {
         return {
           data: result.data,
           status: result.status,
-          statusText: result.statusText, // Adicione essa propriedade
-          headers: result.headers, // Adicione essa propriedade
-          config: result.config, // Adicione essa propriedade
+          statusText: result.statusText,
+          headers: result.headers,
+          config: result.config,
         };
       })
       .catch(() => {
