@@ -14,10 +14,13 @@ export class CepService {
         return {
           data: result.data,
           status: result.status,
+          statusText: result.statusText, // Adicione essa propriedade
+          headers: result.headers, // Adicione essa propriedade
+          config: result.config, // Adicione essa propriedade
         };
       })
-      .catch((err) => {
-        return err;
+      .catch(() => {
+        throw new BadRequestException('Cep Inválido');
       });
   }
   async findGetByCep2(cep2: string): Promise<AxiosResponse<any>> {
