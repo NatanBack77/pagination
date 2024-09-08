@@ -6,7 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CepModule } from './cep/cep.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), AuthModule, CepModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, CepModule],
   controllers: [AppController],
   providers: [AppService],
 })

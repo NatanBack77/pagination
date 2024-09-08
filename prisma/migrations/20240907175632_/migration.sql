@@ -1,0 +1,5 @@
+-- CreateTable
+CREATE TABLE "Cep" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "cep" TEXT NOT NULL
+);
