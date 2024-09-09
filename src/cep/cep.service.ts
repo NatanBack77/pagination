@@ -9,7 +9,7 @@ export class CepService {
   constructor(private readonly httpService: HttpService) {}
   async findGetByCep(cep: string): Promise<AxiosResponse<any>> {
     return this.httpService.axiosRef
-      .get(url.replace('{cep}', cep))
+      .get(url.replace('{cep}', cep), { timeout: 3000 })
       .then((result) => {
         return {
           data: result.data,
@@ -26,7 +26,7 @@ export class CepService {
 
   async findGetByCep2(cep2: string): Promise<AxiosResponse<any>> {
     return this.httpService.axiosRef
-      .get(url2.replace('{cep}', cep2))
+      .get(url2.replace('{cep}', cep2), { timeout: 3000 })
       .then((result) => {
         return {
           data: result.data,
@@ -42,7 +42,7 @@ export class CepService {
   }
   async findGetByCep3(cep3: string): Promise<AxiosResponse<any>> {
     return this.httpService.axiosRef
-      .get(url3.replace('{cep}', cep3))
+      .get(url3.replace('{cep}', cep3), { timeout: 3000 })
       .then((result) => {
         return {
           data: result.data,

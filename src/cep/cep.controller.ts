@@ -14,20 +14,13 @@ export class CepController {
   // @UseGuards(AuthGuard)
   @Get(':cep')
   async getAll(@Param('cep') cep: string) {
-    const inicio = Date.now();
     const validator = await this.cepService.findGetByCep(cep);
-    const tempoTotal = Date.now() - inicio;
-    console.log(tempoTotal);
-    if (validator.status === 400 || tempoTotal > 256) {
-      console.log(tempoTotal);
-      const inicio2 = Date.now();
+
+    if (validator.status === 400) {
       const validator2 = await this.cepService.findGetByCep2(cep);
-      const tempoTotal2 = Date.now() - inicio2;
-      if (validator2.status === 400 || tempoTotal2 >= 1000) {
-        const inicio3 = Date.now();
+      if (validator2.status === 400) {
         const validator3 = await this.cepService.findGetByCep3(cep);
-        const tempoTotal3 = Date.now() - inicio3;
-        if (validator3.status === 400 || tempoTotal3 >= 1000) {
+        if (validator3.status === 400) {
           throw new BadRequestException('Cep Inválido');
         }
         const response = validator3.data;
