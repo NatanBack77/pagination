@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AxiosResponse } from 'axios';
 const url = 'https://viacep.com.br/ws/{cep}/json';
-const url2 = 'https://api.brasilaberto.com/v1/zipcode/{cep}';
+const url2 = 'https://api.postmon.com.br/v1/cep/{cep}';
 const url3 = 'https://opencep.com/v1/{cep}';
 @Injectable()
 export class CepService {

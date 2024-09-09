@@ -11,7 +11,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 @Controller('cep')
 export class CepController {
   constructor(private cepService: CepService) {}
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':cep')
   async getAll(@Param('cep') cep: string) {
     const validator = await this.cepService.findGetByCep(cep);
