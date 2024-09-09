@@ -23,6 +23,7 @@ export class CepService {
         throw new BadRequestException('Cep Inválido');
       });
   }
+
   async findGetByCep2(cep2: string): Promise<AxiosResponse<any>> {
     return this.httpService.axiosRef
       .get(url2.replace('{cep}', cep2))

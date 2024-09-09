@@ -7,7 +7,12 @@ import { CepModule } from './cep/cep.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, CepModule, PrismaModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
+    CepModule,
+    PrismaModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
