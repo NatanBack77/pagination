@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { CepController } from './cep.controller';
 import { CepService } from './cep.service';
 import { HttpModule } from '@nestjs/axios';
+import { AuthService } from 'src/auth/auth.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   imports: [
@@ -11,6 +13,6 @@ import { HttpModule } from '@nestjs/axios';
     }),
   ],
   controllers: [CepController],
-  providers: [CepService],
+  providers: [CepService, AuthService, PrismaService],
 })
 export class CepModule {}
