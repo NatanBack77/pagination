@@ -1,9 +1,10 @@
-import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, IsEmail } from 'class-validator';
 
 export class UserAuth {
   @IsUUID()
   id: string;
 
+  @IsEmail()
   @IsNotEmpty()
   email: string;
 

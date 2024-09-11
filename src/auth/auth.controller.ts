@@ -25,6 +25,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post()
   async signIn(@Body() userDto: UserAuth) {
+    console.log('userDto', userDto);
     const validator = await this.userService.findUserByEmail(userDto.email);
     if (!validator) {
       throw new BadRequestException('usuário ou senha incorreta');
