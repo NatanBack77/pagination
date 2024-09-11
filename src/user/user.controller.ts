@@ -47,6 +47,10 @@ export class UserController {
     @Param() Param: GetIdUser,
     @Body() userDto: User,
   ) {
+    const validator = await this.userservice.findUserById(Param.id);
+    if (validator) {
+      throw new BadRequestException('Email does exists');
+    }
     if (req?.user?.user_Role === this.admin) {
       await this.userservice.updateUserAdmin(Param.id, userDto);
     }

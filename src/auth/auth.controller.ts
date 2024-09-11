@@ -46,9 +46,13 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Get('/me')
   async me(@Request() req): Promise<any> {
-    const userIdentify = await this.userService.findUserById(req.user.sub)
-    return {
-      userIdentify
-    }
+    const userIdentify = await this.userService.findUserById(req.user.sub);
+    const User = {
+      id: userIdentify.id,
+      name: userIdentify.name,
+      email: userIdentify.email,
+      user_Role: userIdentify.user_Role,
+    };
+    return User;
   }
 }
