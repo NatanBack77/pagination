@@ -5,31 +5,50 @@ import {
   HttpCode,
   Request,
   UseGuards,
+  Body,
+  Post,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { randomUUID } from 'node:crypto';
+import { UserAuth } from './dtos/user.dtos';
+import { UserService } from 'src/user/user.service';
+import * as bcrypt from 'bcrypt';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
   @HttpCode(HttpStatus.OK)
-  @Get()
-  async signIn() {
-    const user = {
-      id: randomUUID(),
-      name: this.authService.generateRandomLetters(5),
-    };
+  @Post()
+  async signIn(@Body() userDto: UserAuth) {
+    const validator = await this.userService.findUserByEmail(userDto.email);
+    if (!validator) {
+      throw new BadRequestException('usuário ou senha incorreta');
+    }
+    const isEqualPassword = await bcrypt.compare(
+      userDto.password,
+      validator.password,
+    );
 
-    const token = await this.authService.generateToken({ sub: user.id });
-    return { access_token: token, user_name: user.name };
+    if (!isEqualPassword) {
+      throw new BadRequestException('usuário ou senha incorreta');
+    }
+
+    const token = await this.authService.generateToken({ sub: userDto.id });
+    return { access_token: token };
   }
 
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/me')
   async me(@Request() req): Promise<any> {
-    return req.user;
+    const userIdentify = await this.userService.findUserById(req.user.sub)
+    return {
+      userIdentify
+    }
   }
 }
