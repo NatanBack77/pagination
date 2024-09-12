@@ -14,18 +14,18 @@ import { AuthGuard } from './auth.guard';
 import { UserAuth } from './dtos/user.dtos';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
     private userService: UserService,
   ) {}
-
   @HttpCode(HttpStatus.OK)
   @Post()
   async signIn(@Body() userDto: UserAuth) {
-    console.log('userDto', userDto);
     const validator = await this.userService.findUserByEmail(userDto.email);
     if (!validator) {
       throw new BadRequestException('usuário ou senha incorreta');
@@ -38,11 +38,10 @@ export class AuthController {
     if (!isEqualPassword) {
       throw new BadRequestException('usuário ou senha incorreta');
     }
-
-    const token = await this.authService.generateToken({ sub: userDto.id });
+    const token = await this.authService.generateToken({ sub: validator.id });
     return { access_token: token };
   }
-
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/me')

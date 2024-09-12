@@ -1,13 +1,13 @@
-import { IsNotEmpty, IsString, IsUUID, IsEmail } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
 
 export class UserAuth {
-  @IsUUID()
-  id: string;
-
+  @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsString()
   password: string;

@@ -12,18 +12,22 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { GetIdUser, User } from './dtos/user.dtos';
-import { Prisma, UserType } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { UserType } from 'src/auth/user-type.enum';
 import { Roles } from 'src/auth/roles.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/role.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   private admin: string = 'ADMIN';
   private saltOrRounds: number = 10;
 
   constructor(private userservice: UserService) {}
+
   @HttpCode(HttpStatus.CREATED)
   @Post()
   async createUser(@Body() userDto: User) {
@@ -39,8 +43,9 @@ export class UserController {
     };
     await this.userservice.createUser(userCreate);
   }
+  @ApiBearerAuth()
   @UseGuards(AuthGuard, RolesGuard)
-  @Roles(UserType.ADMIN, UserType.USER)
+  @Roles(UserType.Admin, UserType.User)
   @Put(':id')
   async updateUser(
     @Req() req,
@@ -48,10 +53,11 @@ export class UserController {
     @Body() userDto: User,
   ) {
     const validator = await this.userservice.findUserById(Param.id);
-    if (validator) {
-      throw new BadRequestException('Email does exists');
-    }
+
     if (req?.user?.user_Role === this.admin) {
+      if (validator) {
+        throw new BadRequestException('Email does exists');
+      }
       await this.userservice.updateUserAdmin(Param.id, userDto);
     }
     const User = {
