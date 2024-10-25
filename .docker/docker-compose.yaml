@@ -1,0 +1,30 @@
+
+ services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - post
+    volumes:
+      - post:/data
+  postgres:
+    image: postgres:latest
+    container_name: postgrestest
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - post:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=root
+      - POSTGRES_DB=200
+    networks:
+      - post
+ networks:
+   post:
+    driver: bridge
+ volumes:
+  post:
